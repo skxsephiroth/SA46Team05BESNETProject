@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SA46Team05BESNETProject
 {
-    public partial class Form1 : Form
+    public partial class TemplateForm : Form
     {
-        public Form1()
+        public TemplateForm()
         {
             InitializeComponent();
         }
