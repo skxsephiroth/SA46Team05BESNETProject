@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SA46Team05BESNETProject
 {
-    public partial class CancelBookingForm : Form
+    public partial class CancelBookingForm : TemplateForm
     {
         SA46Team05BESNTETProjectEntities context = new SA46Team05BESNTETProjectEntities();
         BindingSource tList = new BindingSource(); 
@@ -31,23 +31,31 @@ namespace SA46Team05BESNETProject
             tomorrowDate = new DateTime(2018, 1, 31); // test using this date
             //tList = context.Transactions.Where(x => x.NRIC == s && x.BookingDate == date).ToList();
             //Transaction t = context.Transactions.FirstOrDefault(x => x.NRIC == s && x.BookingDate == date);
-            Member m = context.Members.FirstOrDefault(x => x.NRIC == s);
-            if(m is null)
+
+            try
             {
-                throw new ItemNotFound(String.Format("No Member with NRIC/FIN {0} found", s));
-            }
-            
-            foreach (Transaction t in m.Transactions)
-            {
-                if(t.BookingDate == tomorrowDate)
+                Member m = context.Members.FirstOrDefault(x => x.NRIC == s); ;
+                if (m is null)
                 {
-                    tList.Add(t);
-                    //MessageBox.Show(BookedDataGridView.Rows.Count.ToString()); 
-                    //DataGridViewRow row = BookedDataGridView.Rows[BookedDataGridView.Rows.Count - 1];
-                    //row.Cells["Activity"].Value = context.Facilities.First(x => x.FacilityID == t.FacilityID).Activity;
-                    BookedDataGridView.Rows[BookedDataGridView.Rows.Count-2].Cells["Activity"].Value = context.Facilities.First(x => x.FacilityID == t.FacilityID).Activity;
+                    throw new ItemNotFound(String.Format("No Member with NRIC/FIN {0} found", s));
+                }
+                foreach (Transaction t in m.Transactions)
+                {
+                    if (t.BookingDate == tomorrowDate)
+                    {
+                        tList.Add(t);
+                        //MessageBox.Show(BookedDataGridView.Rows.Count.ToString()); 
+                        //DataGridViewRow row = BookedDataGridView.Rows[BookedDataGridView.Rows.Count - 1];
+                        //row.Cells["Activity"].Value = context.Facilities.First(x => x.FacilityID == t.FacilityID).Activity;
+                        BookedDataGridView.Rows[BookedDataGridView.Rows.Count - 2].Cells["Activity"].Value = context.Facilities.First(x => x.FacilityID == t.FacilityID).Activity;
+                    }
                 }
             }
+            catch (ApplicationException error)
+            {
+                StatusLabel.Text = error.Message;
+            }
+            
             //BookedDataGridView.Refresh();
             //BookedDataGridView.DataSource = tList;
         }
@@ -81,6 +89,8 @@ namespace SA46Team05BESNETProject
 
         private void ConfirmCancelBookingButton_Click(object sender, EventArgs e)
         {
+            List<DataGridViewRow> cancelledBookings = new List<DataGridViewRow>();
+
             foreach (DataGridViewRow row in BookedDataGridView.Rows)
             //foreach (Transaction t in tList)
             {
@@ -122,8 +132,13 @@ namespace SA46Team05BESNETProject
                     //t.BookingStatus = "Cancelled";
 
                     context.SaveChanges();
-                    tList.Remove(t);
+                    //tList.Remove(t); doesnot work. seems to interfer with BookedDataGridView.Rows
+                    cancelledBookings.Add(row);
                 }
+            }
+            foreach (DataGridViewRow row in cancelledBookings)
+            {
+                BookedDataGridView.Rows.Remove(row);
             }
         }
     }
