@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.FacilitiesDataGridView = new System.Windows.Forms.DataGridView();
-            this.TimeSlot = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Availability = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ActivityLabel = new System.Windows.Forms.Label();
             this.FacilityIDLabel = new System.Windows.Forms.Label();
             this.DateLabel = new System.Windows.Forms.Label();
@@ -39,6 +37,9 @@
             this.UpdateAvailiabilityButton = new System.Windows.Forms.Button();
             this.CheckAvailabilityButton = new System.Windows.Forms.Button();
             this.TomorrowDateLabel = new System.Windows.Forms.Label();
+            this.TimeSlot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Availability = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChangeAvailabilityStatusButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.FacilitiesDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,22 +50,13 @@
             this.TimeSlot,
             this.Availability});
             this.FacilitiesDataGridView.Location = new System.Drawing.Point(125, 118);
-            this.FacilitiesDataGridView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FacilitiesDataGridView.Margin = new System.Windows.Forms.Padding(2);
             this.FacilitiesDataGridView.Name = "FacilitiesDataGridView";
+            this.FacilitiesDataGridView.ReadOnly = true;
             this.FacilitiesDataGridView.RowTemplate.Height = 28;
-            this.FacilitiesDataGridView.Size = new System.Drawing.Size(291, 110);
+            this.FacilitiesDataGridView.Size = new System.Drawing.Size(286, 110);
             this.FacilitiesDataGridView.TabIndex = 0;
-            // 
-            // TimeSlot
-            // 
-            this.TimeSlot.HeaderText = "Time Slot";
-            this.TimeSlot.Name = "TimeSlot";
-            this.TimeSlot.Width = 150;
-            // 
-            // Availability
-            // 
-            this.Availability.HeaderText = "Availability";
-            this.Availability.Name = "Availability";
+            this.FacilitiesDataGridView.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FacilitiesDataGridView_CellContentDoubleClick);
             // 
             // ActivityLabel
             // 
@@ -108,10 +100,11 @@
             "Table Tennis",
             "Basketball"});
             this.ActivityComboBox.Location = new System.Drawing.Point(211, 20);
-            this.ActivityComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ActivityComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.ActivityComboBox.Name = "ActivityComboBox";
             this.ActivityComboBox.Size = new System.Drawing.Size(82, 21);
             this.ActivityComboBox.TabIndex = 6;
+            this.ActivityComboBox.SelectedIndexChanged += new System.EventHandler(this.ActivityComboBox_SelectedIndexChanged);
             // 
             // FacilityIDComboBox
             // 
@@ -134,7 +127,7 @@
             "BB-3",
             "BB-4"});
             this.FacilityIDComboBox.Location = new System.Drawing.Point(211, 49);
-            this.FacilityIDComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FacilityIDComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.FacilityIDComboBox.Name = "FacilityIDComboBox";
             this.FacilityIDComboBox.Size = new System.Drawing.Size(82, 21);
             this.FacilityIDComboBox.TabIndex = 7;
@@ -142,22 +135,24 @@
             // UpdateAvailiabilityButton
             // 
             this.UpdateAvailiabilityButton.Location = new System.Drawing.Point(337, 242);
-            this.UpdateAvailiabilityButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UpdateAvailiabilityButton.Margin = new System.Windows.Forms.Padding(2);
             this.UpdateAvailiabilityButton.Name = "UpdateAvailiabilityButton";
             this.UpdateAvailiabilityButton.Size = new System.Drawing.Size(74, 26);
             this.UpdateAvailiabilityButton.TabIndex = 9;
             this.UpdateAvailiabilityButton.Text = "Update";
             this.UpdateAvailiabilityButton.UseVisualStyleBackColor = true;
+            this.UpdateAvailiabilityButton.Click += new System.EventHandler(this.UpdateAvailiabilityButton_Click);
             // 
             // CheckAvailabilityButton
             // 
             this.CheckAvailabilityButton.Location = new System.Drawing.Point(125, 242);
-            this.CheckAvailabilityButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CheckAvailabilityButton.Margin = new System.Windows.Forms.Padding(2);
             this.CheckAvailabilityButton.Name = "CheckAvailabilityButton";
             this.CheckAvailabilityButton.Size = new System.Drawing.Size(140, 26);
             this.CheckAvailabilityButton.TabIndex = 10;
             this.CheckAvailabilityButton.Text = "Check Availability";
             this.CheckAvailabilityButton.UseVisualStyleBackColor = true;
+            this.CheckAvailabilityButton.Click += new System.EventHandler(this.CheckAvailabilityButton_Click);
             // 
             // TomorrowDateLabel
             // 
@@ -168,12 +163,38 @@
             this.TomorrowDateLabel.TabIndex = 11;
             this.TomorrowDateLabel.Text = "Tomorrow\'s Date";
             // 
+            // TimeSlot
+            // 
+            this.TimeSlot.DataPropertyName = "SlotNumber";
+            this.TimeSlot.HeaderText = "Time Slot";
+            this.TimeSlot.Name = "TimeSlot";
+            this.TimeSlot.ReadOnly = true;
+            // 
+            // Availability
+            // 
+            this.Availability.DataPropertyName = "IsAvailable";
+            this.Availability.HeaderText = "Availability (Double click to toggle availability)";
+            this.Availability.Name = "Availability";
+            this.Availability.ReadOnly = true;
+            this.Availability.Width = 150;
+            // 
+            // ChangeAvailabilityStatusButton
+            // 
+            this.ChangeAvailabilityStatusButton.Location = new System.Drawing.Point(427, 180);
+            this.ChangeAvailabilityStatusButton.Name = "ChangeAvailabilityStatusButton";
+            this.ChangeAvailabilityStatusButton.Size = new System.Drawing.Size(75, 48);
+            this.ChangeAvailabilityStatusButton.TabIndex = 12;
+            this.ChangeAvailabilityStatusButton.Text = "Change Availability Status";
+            this.ChangeAvailabilityStatusButton.UseVisualStyleBackColor = true;
+            this.ChangeAvailabilityStatusButton.Click += new System.EventHandler(this.ChangeAvailabilityStatusButton_Click);
+            // 
             // SportsFacilitiesMaintenanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(545, 376);
+            this.Controls.Add(this.ChangeAvailabilityStatusButton);
             this.Controls.Add(this.TomorrowDateLabel);
             this.Controls.Add(this.CheckAvailabilityButton);
             this.Controls.Add(this.UpdateAvailiabilityButton);
@@ -183,9 +204,10 @@
             this.Controls.Add(this.FacilityIDLabel);
             this.Controls.Add(this.ActivityLabel);
             this.Controls.Add(this.FacilitiesDataGridView);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SportsFacilitiesMaintenanceForm";
             this.Text = "SportsFacilitiesMaintenanceForm";
+            this.Load += new System.EventHandler(this.SportsFacilitiesMaintenanceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.FacilitiesDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,12 +220,13 @@
         private System.Windows.Forms.Label ActivityLabel;
         private System.Windows.Forms.Label FacilityIDLabel;
         private System.Windows.Forms.Label DateLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TimeSlot;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Availability;
         private System.Windows.Forms.ComboBox ActivityComboBox;
         private System.Windows.Forms.ComboBox FacilityIDComboBox;
         private System.Windows.Forms.Button UpdateAvailiabilityButton;
         private System.Windows.Forms.Button CheckAvailabilityButton;
         private System.Windows.Forms.Label TomorrowDateLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeSlot;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Availability;
+        private System.Windows.Forms.Button ChangeAvailabilityStatusButton;
     }
 }
