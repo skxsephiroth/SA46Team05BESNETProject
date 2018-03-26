@@ -35,7 +35,7 @@
           <Property Name="MemberName" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="nvarchar" MaxLength="255" />
           <Property Name="Gender" Type="nvarchar" MaxLength="255" />
-          <Property Name="Age" Type="float" />
+          <Property Name="Age" Type="int" />
         </EntityType>
         <EntityType Name="Transactions">
           <Key>
@@ -141,7 +141,7 @@
           <Property Name="MemberName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Age" Type="Double" />
+          <Property Name="Age" Type="Int32" />
           <NavigationProperty Name="Transactions" Relationship="Self.FK_Transactions_Members" FromRole="Members" ToRole="Transactions" />
         </EntityType>
         <EntityType Name="Transaction">
@@ -194,7 +194,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SA46Team05BESNTETProjectEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SA46Team05BESNETProjectEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Availabilities" EntityType="Self.Availability" />
           <EntitySet Name="Facilities" EntityType="Self.Facility" />
           <EntitySet Name="Members" EntityType="Self.Member" />
@@ -217,7 +217,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SA46Team05BESNETProjectStoreContainer" CdmEntityContainer="SA46Team05BESNTETProjectEntities">
+        <EntityContainerMapping StorageEntityContainer="SA46Team05BESNETProjectStoreContainer" CdmEntityContainer="SA46Team05BESNETProjectEntities">
           <EntitySetMapping Name="Availabilities">
             <EntityTypeMapping TypeName="SA46Team05BESNETProject.Availability">
               <MappingFragment StoreEntitySet="Availabilities">

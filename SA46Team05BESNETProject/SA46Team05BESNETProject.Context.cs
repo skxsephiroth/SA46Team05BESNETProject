@@ -13,10 +13,10 @@ namespace SA46Team05BESNETProject
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class SA46Team05BESNTETProjectEntities : DbContext
+    public partial class SA46Team05BESNETProjectEntities : DbContext
     {
-        public SA46Team05BESNTETProjectEntities()
-            : base("name=SA46Team05BESNTETProjectEntities")
+        public SA46Team05BESNETProjectEntities()
+            : base("name=SA46Team05BESNETProjectEntities")
         {
         }
     

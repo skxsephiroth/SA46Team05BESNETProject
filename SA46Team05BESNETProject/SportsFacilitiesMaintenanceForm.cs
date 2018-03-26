@@ -12,7 +12,7 @@ namespace SA46Team05BESNETProject
 {
     public partial class SportsFacilitiesMaintenanceForm : Form
     {
-        SA46Team05BESNTETProjectEntities context = new SA46Team05BESNTETProjectEntities();
+        SA46Team05BESNETProjectEntities context = new SA46Team05BESNETProjectEntities();
         BindingSource slotAvailabilityBasket = new BindingSource(); // 8 objects
 
         public SportsFacilitiesMaintenanceForm()

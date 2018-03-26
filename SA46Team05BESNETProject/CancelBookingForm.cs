@@ -12,7 +12,7 @@ namespace SA46Team05BESNETProject
 {
     public partial class CancelBookingForm : TemplateForm
     {
-        SA46Team05BESNTETProjectEntities context = new SA46Team05BESNTETProjectEntities();
+        SA46Team05BESNETProjectEntities context = new SA46Team05BESNETProjectEntities();
         BindingSource tList = new BindingSource(); 
         //List<Transaction> tList;
 
@@ -34,7 +34,7 @@ namespace SA46Team05BESNETProject
 
             try
             {
-                Member m = context.Members.FirstOrDefault(x => x.NRIC == s); ;
+                Member m = context.Members.FirstOrDefault(x => x.NRIC == s);
                 if (m is null)
                 {
                     throw new ItemNotFound(String.Format("No Member with NRIC/FIN {0} found", s));
